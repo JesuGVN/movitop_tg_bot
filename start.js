@@ -12,7 +12,7 @@ const dataBase = global.dataBase;
       dataBase.DB_Connect();
 
 const chanelID = '-1001358880435';
-const bot_url = 't.me/movitop_edit_robot';
+const bot_url = 't.me/movitop_films_bot';
 
 
 
