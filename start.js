@@ -83,7 +83,7 @@ function getFilm(id,u_id){
     request(cpl_url, async function (error, response, body) {
       const mov = JSON.parse(body);
 
-      if(mov.poster.length > 0 && mov.poster != null){
+      if(mov.poster != null && typeof mov.poster != 'undefined'){
 
         let name = mov.name;
         let year = mov.year;
