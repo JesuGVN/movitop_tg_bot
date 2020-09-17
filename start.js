@@ -19,7 +19,7 @@ const bot_url = 't.me/movitop_films_bot';
 bot.on('message', async (msg) => {
   let haveUser = await getUser(msg.from.id);
 
-  if(haveUser){
+  if(haveUser && msg.text != '/start'){
     await search(msg);
   }
 });
@@ -176,6 +176,7 @@ function getUser(id){
           let res = await regUser(id);
 
           if(res){
+            console.log('ПОЛЬЗОВАТЕЛЬ ' + id + ' УСПЕШНО ЗАРЕГИСТРИРОВАН');
             resolve(true);
           }else{
             resolve(false);
