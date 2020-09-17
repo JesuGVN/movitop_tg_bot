@@ -110,7 +110,9 @@ function getFilm(id,u_id){
             ]
           }
         }
-        bot.sendPhoto(u_id,poster,opt);
+        bot.sendPhoto(u_id,poster,opt).catch(function(err){
+          resolve(true);
+        })
       }
 
 
