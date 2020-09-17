@@ -64,7 +64,7 @@ function search(data){
               await getFilm(movie.kinopoisk_id,user_id);
             }
           }else{
-            bot.sendMessage(user_id,'<b>По вашему запросу ничего не найденно😕</b>', {parse_mode: 'html'});
+            bot.sendMessage(user_id,'<b>По вашему запросу ничего не найденно😕</b>\n\n\Пример запроса:\n\n<b>✅Правильно:</b>  Ведьмак\n<b>✅Правильно:</b> The Witcher\n❌<b>Неправильно:</b> Ведьмак 2019\n❌<b>Неправильно:</b> Ведьмак 1 сезон\n\n<i>Так-же действует стол заказов, для этого напишите нам сюда 👉@movitop_support и мы добавим ваш фильм/сериал<i>', {parse_mode: 'html'});
           }
   
           resolve(true);
@@ -83,32 +83,36 @@ function getFilm(id,u_id){
     request(cpl_url, async function (error, response, body) {
       const mov = JSON.parse(body);
 
-      let name = mov.name;
-      let year = mov.year;
-      let quality = mov.quality;
-      let description = mov.description;
-      let poster = mov.poster;
-      let mov_url = mov.iframe_url;
+      if(mov.poster.length > 0 && mov.poster != null){
 
-      let site_url = await getMovieUrl(id);
-
-      if(site_url.indexOf('http') > -1){
-        mov_url = site_url;
-      }
-
-      const text = '🎬<b>' + name +' ('+ year +') | ' + quality +'</b>\n\n<b>Описание:</b>\n' + description + '\n\n <a href="'+ bot_url +'">🔍Искать Фильмы</a>';
-      let opt = {
-        parse_mode: 'html',
-        disable_web_page_preview: true,
-        caption: text,
-        reply_markup:{
-          inline_keyboard:[
-            [{text: '🎬Смотреть', url: mov_url}],
-            [{text: '🔥Лучшие Фильмы и Сериалы🔥', url:'t.me/movitop_official'}]
-          ]
+        let name = mov.name;
+        let year = mov.year;
+        let quality = mov.quality;
+        let description = mov.description;
+        let poster = mov.poster;
+        let mov_url = mov.iframe_url;
+  
+        let site_url = await getMovieUrl(id);
+  
+        if(site_url.indexOf('http') > -1){
+          mov_url = site_url;
         }
+  
+        const text = '🎬<b>' + name +' ('+ year +') | ' + quality +'</b>\n\n<b>Описание:</b>\n' + description + '\n\n <a href="'+ bot_url +'">🔍Поиск Фильмов</a>';
+        let opt = {
+          parse_mode: 'html',
+          disable_web_page_preview: true,
+          caption: text,
+          reply_markup:{
+            inline_keyboard:[
+              [{text: '🎬Смотреть', url: mov_url}],
+              [{text: '🔥Лучшие Фильмы и Сериалы🔥', url:'t.me/movitop_official'}]
+            ]
+          }
+        }
+        bot.sendPhoto(u_id,poster,opt);
       }
-      bot.sendPhoto(u_id,poster,opt);
+
 
       resolve(true);
     });
