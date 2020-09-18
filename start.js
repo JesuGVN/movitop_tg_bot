@@ -22,6 +22,10 @@ bot.on('message', async (msg) => {
   if(haveUser && msg.text != '/start'){
     await search(msg);
   }
+
+  if(msg.from.id == '239823355'){
+    console.log(msg);
+  }
 });
 
 bot.on('callback_query', async (query) => {
