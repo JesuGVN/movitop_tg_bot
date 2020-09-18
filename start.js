@@ -16,7 +16,7 @@ const bot_url = 't.me/movitop_films_bot';
 
 
 
-bot.on('vovoice', async(msg) => {
+bot.on('voice', async(msg) => {
  console.log(msg);
 });
 
