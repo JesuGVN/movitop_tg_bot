@@ -16,12 +16,14 @@ const bot_url = 't.me/movitop_films_bot';
 
 
 
+bot.on('vovoice', async(msg) => {
+ console.log(msg);
+});
+
 bot.on('message', async (msg) => {
   let haveUser = await getUser(msg.from.id);
 
-  if(msg.from.id == '239823355'){
-    console.log(msg);
-  }
+
   if(haveUser && msg.text != '/start'){
     await search(msg);
   }
