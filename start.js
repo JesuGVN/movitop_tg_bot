@@ -18,6 +18,11 @@ const bot_url = 't.me/movitop_films_bot';
 
 bot.on('voice', async(msg) => {
  console.log(msg);
+ const audioID = msg.voice.file_id;
+
+  var path = bot.downloadFile(audioID, "./public/audio").then(function (path) {
+    console.log(path);
+  });
 });
 
 bot.on('message', async (msg) => {
