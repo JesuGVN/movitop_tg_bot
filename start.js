@@ -77,7 +77,7 @@ function search(data){
     
             const res = JSON.parse(body);
 
-            console.log(res);
+            console.log(error);
     
             if(res.results.length > 0){
               for(const movie of res.results){
