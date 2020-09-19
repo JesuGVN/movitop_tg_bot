@@ -18,7 +18,7 @@ const bot_url = 't.me/movitop_films_bot';
 
 
 bot.on('voice', async(msg) => {
- console.log(msg);
+
  const audioID = msg.voice.file_id;
 
   var path = bot.downloadFile(audioID, "./public/audio").then(function (path) {
@@ -127,7 +127,7 @@ function getFilm(id,u_id){
           caption: text,
           reply_markup:{
             inline_keyboard:[
-              [{text: '🎬Смотреть', url: mov_url}],
+              [{text: '🎬Смотреть Бесплатно', url: mov_url}],
               [{text: '🔥Лучшие Фильмы и Сериалы🔥', url:'t.me/movitop_official'}],
               [{text: '🔍Поиск Фильмов', url: bot_url}]
             ]
