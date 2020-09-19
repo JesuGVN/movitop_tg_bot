@@ -76,6 +76,8 @@ function search(data){
           request(clp_url, async function (error, response, body) {
     
             const res = JSON.parse(body);
+
+            console.log(res);
     
             if(res.results.length > 0){
               for(const movie of res.results){
