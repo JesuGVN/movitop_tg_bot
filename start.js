@@ -40,11 +40,12 @@ bot.on('callback_query', async (query) => {
   const data = query.data;
   const msg_id = query.message.message_id;
   const user_id = query.from.id;
+  const username = query.from.username;
 
   // console.log(data);
 
   if(data == 'check_subs'){
-    checkUser(user_id,true,query.id, user_id, msg_id);
+    checkUser(user_id,true,query.id, user_id, msg_id, username);
   }
 })
 
