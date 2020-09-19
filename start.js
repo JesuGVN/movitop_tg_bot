@@ -29,7 +29,6 @@ bot.on('voice', async(msg) => {
 bot.on('message', async (msg) => {
   let haveUser = await getUser(msg.from.id);
 
-  console.log(msg);
   if(haveUser && msg.text != '/start'){
     await search(msg);
   }
@@ -57,8 +56,9 @@ function search(data){
 
     const s = data.text;
     const user_id = data.from.id;
+    const user_name = data.from.username;
 
-    console.log(user_id + ' ИЩЕТ: ' + s);
+    console.log(user_name + '(' + user_id + ')  ИЩЕТ: ' + s);
 
     if(s == 'после' || s == 'после 2' || s == 'после глава 2' || s == 'После' || s == 'После 2' || s == 'После глава 2'){
       await getFilm('1098154',user_id);
@@ -120,7 +120,7 @@ function getFilm(id,u_id){
           mov_url = site_url;
         }
   
-        const text = '🎬<b>' + name +' ('+ year +') | ' + quality +'</b>\n\n<b>Описание:</b>\n' + description + '\n\n <a href="'+ bot_url +'">🔍Поиск Фильмов</a>';
+        const text = '🎬<b>' + name +' ('+ year +') | ' + quality +'</b>\n\n<b>Описание:</b>\n' + description;
         let opt = {
           parse_mode: 'html',
           disable_web_page_preview: true,
@@ -128,7 +128,8 @@ function getFilm(id,u_id){
           reply_markup:{
             inline_keyboard:[
               [{text: '🎬Смотреть', url: mov_url}],
-              [{text: '🔥Лучшие Фильмы и Сериалы🔥', url:'t.me/movitop_official'}]
+              [{text: '🔥Лучшие Фильмы и Сериалы🔥', url:'t.me/movitop_official'}],
+              [{text: '🔍Поиск Фильмов', url: bot_url}]
             ]
           }
         }
@@ -221,7 +222,7 @@ function getUser(id){
 
 }
 
-function checkUser(id,type,callback_id, chat_id,msg_id){
+function checkUser(id,type,callback_id, chat_id,msg_id, user_name){
 
   return new Promise((resolve) => {
 
@@ -232,6 +233,7 @@ function checkUser(id,type,callback_id, chat_id,msg_id){
           const msg = '<b>👋Добро пожаловать в поиск мой друг!</b>Напиши мне название фильма, мультфильма или сериала и я найду их для тебя.\n\n<b>❗️ВАЖНО!</b> Год выпуска, номер сезона или номер серии писать не нужно! Название должно быть правильным (как в Кинопоиске)! В обратном случае, я ничего не смогу найти для тебя. Например:\n\n<b>✅Правильно:</b>  Ведьмак\n✅<b>Правильно:</b> The Witcher\n❌<b>Неправильно:</b> Ведьмак 2019\n❌<b>Неправильно:</b> Ведьмак 1 сезон\n\nЖду от тебя названия фильма👇\nПриятного просмотра!🍿'
           bot.editMessageText(msg,{chat_id: chat_id, message_id: msg_id,parse_mode: 'html', disable_web_page_preview: true})
 
+          console.log(user_name + '(' + chat_id + ') УСПЕШНО АКТИВИРОВАЛ БОТА');
           
         }
         resolve(true);
