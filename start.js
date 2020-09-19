@@ -2,6 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const request = require('request');
 const querystring   = require('querystring');
 const { userInfo } = require('os');
+const { Console } = require('console');
 
 const token = '1261704732:AAFJfhPdxjJstp4vreOjK8LG1VHVsad-1oM';
 const bot = new TelegramBot(token, {polling: true});
@@ -28,7 +29,7 @@ bot.on('voice', async(msg) => {
 bot.on('message', async (msg) => {
   let haveUser = await getUser(msg.from.id);
 
-
+  console.log(msg);
   if(haveUser && msg.text != '/start'){
     await search(msg);
   }
@@ -230,6 +231,8 @@ function checkUser(id,type,callback_id, chat_id,msg_id){
         if(typeof type != 'undefined'){
           const msg = '<b>👋Добро пожаловать в поиск мой друг!</b>Напиши мне название фильма, мультфильма или сериала и я найду их для тебя.\n\n<b>❗️ВАЖНО!</b> Год выпуска, номер сезона или номер серии писать не нужно! Название должно быть правильным (как в Кинопоиске)! В обратном случае, я ничего не смогу найти для тебя. Например:\n\n<b>✅Правильно:</b>  Ведьмак\n✅<b>Правильно:</b> The Witcher\n❌<b>Неправильно:</b> Ведьмак 2019\n❌<b>Неправильно:</b> Ведьмак 1 сезон\n\nЖду от тебя названия фильма👇\nПриятного просмотра!🍿'
           bot.editMessageText(msg,{chat_id: chat_id, message_id: msg_id,parse_mode: 'html', disable_web_page_preview: true})
+
+          
         }
         resolve(true);
       }else{
