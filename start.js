@@ -64,7 +64,8 @@ function search(data){
       await getFilm('1281638',user_id);
 
       resolve(true);
-    }else{
+    }
+
       if(typeof s != 'undefined'){
         if(s.length > 2){
     
@@ -72,26 +73,33 @@ function search(data){
           let clp_url = 'https://api1600254977.apicollaps.cc/list?token=3c0d770740d076419de1d300f6196112&name=' + encodeURIComponent(s);
     
           bot.sendMessage(user_id,'<b>😉Начинаю искать ...</b>', {parse_mode: 'html'});
-          request(clp_url, async function (error, response, body) {
-    
-            const res = JSON.parse(body);
-    
-            if(res.results.length > 0){
-              for(const movie of res.results){
-                await getFilm(movie.kinopoisk_id,user_id);
-              }
-            }else{
-              bot.sendMessage(user_id,'<b>По вашему запросу ничего не найденно😕</b>\n\n\<b>Пример запроса:</b>\n\n<b>✅Правильно:</b>  Ведьмак\n<b>✅Правильно:</b> The Witcher\n❌<b>Неправильно:</b> Ведьмак 2019\n❌<b>Неправильно:</b> Ведьмак 1 сезон\n\n<i>Так-же действует стол заказов, для этого напишите нам сюда 👉@movitop_support и мы добавим ваш фильм/сериал</i>', {parse_mode: 'html'});
-            }
-    
+
+          if(s == 'после' || s == 'после 2' || s == 'после глава 2' || s == 'После' || s == 'После 2' || s == 'После глава 2'){
+            await getFilm('1098154',user_id);
+            await getFilm('1281638',user_id);
+      
             resolve(true);
-          });
+          }else{
+            request(clp_url, async function (error, response, body) {
+      
+              const res = JSON.parse(body);
+      
+              if(res.results.length > 0){
+                for(const movie of res.results){
+                  await getFilm(movie.kinopoisk_id,user_id);
+                }
+              }else{
+                bot.sendMessage(user_id,'<b>По вашему запросу ничего не найденно😕</b>\n\n\<b>Пример запроса:</b>\n\n<b>✅Правильно:</b>  Ведьмак\n<b>✅Правильно:</b> The Witcher\n❌<b>Неправильно:</b> Ведьмак 2019\n❌<b>Неправильно:</b> Ведьмак 1 сезон\n\n<i>Так-же действует стол заказов, для этого напишите нам сюда 👉@movitop_support и мы добавим ваш фильм/сериал</i>', {parse_mode: 'html'});
+              }
+      
+              resolve(true);
+            });
+          }
         }else{
           bot.sendMessage(user_id,'<b>Запрос должен состоять из более 2х символов😊</b>', {parse_mode: 'html'});
         }
       }
-    }
-
+    
   });
 }
 
