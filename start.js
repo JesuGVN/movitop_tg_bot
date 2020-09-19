@@ -59,7 +59,7 @@ function search(data){
     const user_id = data.from.id;
     const user_name = data.from.username;
 
-    console.log(user_name + '(' + user_id + ')  ИЩЕТ: ' + s);
+    console.log(user_name + '(' + user_id + ') ИЩЕТ: ' + s);
 
     if(s == 'после' || s == 'после 2' || s == 'после глава 2' || s == 'После' || s == 'После 2' || s == 'После глава 2'){
       await getFilm('1098154',user_id);
