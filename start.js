@@ -99,7 +99,7 @@ async function sendMsg(id){
       bot.sendMessage(id,message,opt).then(function(data){
         resolve(true);
       }).catch(function(err){
-        global.connection.query('DELETE users WHERE TG_ID = ?',id,function(err){
+        global.connection.query('DELETE FROM users WHERE TG_ID = ?',id,function(err){
           if(err) throw err;
           else{
             resolve(false);
