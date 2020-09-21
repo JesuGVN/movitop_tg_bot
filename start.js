@@ -45,7 +45,7 @@ bot.on('message', async (msg) => {
     bot.sendMessage(msg.from.id,message,opt);
   }
 
-  if(haveUser){
+  if(haveUser && msg.text != '/start'){
     await search(msg);
   }
 
