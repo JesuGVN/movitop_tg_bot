@@ -206,8 +206,6 @@ function getUser(id){
 
             let chkUsr = await checkUser(id);
 
-           
-
             if(chkUsr == false){
               resolve(false);
             }
