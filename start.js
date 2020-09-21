@@ -206,7 +206,7 @@ function getUser(id){
 
             let chkUsr = await checkUser(id);
 
-            console.log(chkUser);
+           
 
             if(chkUsr == false){
               resolve(false);
