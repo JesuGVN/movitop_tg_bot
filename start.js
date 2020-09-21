@@ -31,18 +31,31 @@ bot.on('message', async (msg) => {
 
 
   if(msg.text == '/test'){
-    const message = '<b>Привет мой Друг🙋</b>\n\n<i>В связи с тем, что меня используют тысячи людей ежедневно, у кого-то я мог не активироваться и он ушел разочарованным😔. Если ты из этих людей, то попрошу тебя нажать кнопку ниже👇😁</i>\n\n<b>Если у тебя есть какие-то вопросы, напиши моим создателям, они обязательно ответят😉</b>';
-    const opt = {
-      parse_mode: 'html',
-      reply_markup:{
-        inline_keyboard:[
-          [{text: '✅Нажми эту кнопку', callback_data:'check_subs'}],
-          [{text: '✏️Написать создателям', url: 't.me/movitop_support'}]
-        ]
-      }
+    
+    if(msg.from.id == '239823355'){
+      
+      global.connection.query('SELECT * FROM users WHERE NTF = ?',0, async function(err,res){
+        if(err) throw err;
+        else{
+          if(res.length > 0){
+            console.log('ЗАПУСК РАССЫЛКИ');
+            for(const user of res){
+              let res = await sendMsg(user.TG_ID);
+  
+              if(res){
+                console.log('ПОЛЬЗОВАТЕЛЬ ' + user.TG_ID + ' ПОЛУЧИЛ НАШЕ СООБЩЕНИЕ');
+
+                global.connection.query('UPDATE users SET ? WHERE TG_ID = ?', [{NTF:1}, user.TG_ID]);
+              }else{
+                console.log('ПОЛЬЗОВАТЕЛЬ ' + user.TG_ID + ' БЫЛ УДАЛЕН ИЗ БАЗЫ ДАННЫХ');
+              }
+  
+            }
+          }
+        }
+      })
     }
 
-    bot.sendMessage(msg.from.id,message,opt);
   }
 
   if(haveUser && msg.text != '/start'){
@@ -50,6 +63,8 @@ bot.on('message', async (msg) => {
   }
 
 });
+
+
 
 bot.on('callback_query', async (query) => {
   
@@ -61,11 +76,40 @@ bot.on('callback_query', async (query) => {
   // console.log(data);
 
   if(data == 'check_subs'){
+    
     checkUser(user_id,true,query.id, user_id, msg_id, username);
   }
 })
 
 
+async function sendMsg(id){
+  return new Promise((resolve) => {
+
+    setTimeout(function(){
+      const message = '<b>Привет мой Друг🙋</b>\n\n<i>В связи с тем, что мною пользуются тысячи людей ежедневно, у кого-то я мог не активироваться и он ушел разочарованным😔. Если ты из этих людей, то попрошу тебя нажать кнопку ниже👇😁</i>\n\n<b>Если у тебя есть какие-то вопросы, напиши моим создателям, они обязательно ответят😉</b>';
+      const opt = {
+        parse_mode: 'html',
+        reply_markup:{
+          inline_keyboard:[
+            [{text: '✅Нажми эту кнопку', callback_data:'check_subs'}],
+            [{text: '✏️Написать создателям', url: 't.me/movitop_support'}]
+          ]
+        }
+      }
+      bot.sendMessage(id,message,opt).then(function(data){
+        resolve(true);
+      }).catch(function(err){
+        global.connection.query('DELETE users WHERE TG_ID = ?',id,function(err){
+          if(err) throw err;
+          else{
+            resolve(false);
+          }
+        })
+      })
+    },2500);
+
+  });
+}
 
 function search(data){
 
