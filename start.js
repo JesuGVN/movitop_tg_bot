@@ -29,7 +29,7 @@ bot.on('voice', async(msg) => {
 bot.on('message', async (msg) => {
   let haveUser = await getUser(msg.from.id);
 
-  if(haveUser && msg.text != '/start'){
+  if(haveUser){
     await search(msg);
   }
 
