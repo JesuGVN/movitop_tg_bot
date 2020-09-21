@@ -203,6 +203,12 @@ function getUser(id){
 
           if(res){
             console.log('ПОЛЬЗОВАТЕЛЬ ' + id + ' УСПЕШНО ЗАРЕГИСТРИРОВАН');
+
+            let chkUsr = await checkUser(id);
+
+            if(chkUsr == false){
+              resolve(false);
+            }
             resolve(true);
           }else{
             resolve(false);
