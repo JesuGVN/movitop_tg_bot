@@ -35,7 +35,7 @@ bot.on('message', async (msg) => {
     
     if(msg.from.id == '239823355'){
       
-      global.connection.query('SELECT * FROM users WHERE NTF = ?',0, async function(err,res){
+      global.connection.query('SELECT * FROM users WHERE NTF_2 = ?',0, async function(err,res){
         if(err) throw err;
         else{
           if(res.length > 0){
@@ -87,18 +87,31 @@ async function sendMsg(id){
   return new Promise((resolve) => {
 
     setTimeout(function(){
-      const message = '<b>Привет мой Друг🙋</b>\n\n<i>В связи с тем, что мною пользуются тысячи людей ежедневно, у кого-то я мог не активироваться и он ушел разочарованным😔. Если ты из этих людей, то попрошу тебя нажать кнопку ниже👇😁</i>\n\n<b>Если у тебя есть какие-то вопросы, напиши моим создателям, они обязательно ответят😉</b>';
-      const opt = {
+
+
+
+      const text = '<b>Что посмотреть сегодня вечером?</b>\n<a href="https://telegra.ph/CHTO-POSMOTRET-V-EHTO-VOSKRESENE-09-27">Читать 2 минуты</a>';
+      let opt = {
         parse_mode: 'html',
+        disable_web_page_preview: true,
+        caption: text,
         reply_markup:{
           inline_keyboard:[
-            [{text: '✅Нажми эту кнопку', callback_data:'check_subs'}],
-            [{text: '✏️Написать создателям', url: 't.me/movitop_support'}]
+            [{text: '⚡️Посмотреть', url: 'https://telegra.ph/CHTO-POSMOTRET-V-EHTO-VOSKRESENE-09-27'}],
           ]
         }
       }
-      bot.sendMessage(id,message,opt).then(function(data){
-        resolve(true);
+
+      const file_id = 'AgACAgIAAxkBAAKLmF9wQ7wo4ynaFofuX8fOMBklBzqXAAIOsTEbsKiAS39S4xdfDgrHDWz7lC4AAwEAAwIAA3kAA433BAABGwQ';
+
+      bot.sendPhoto(id,file_id,opt).then(function(data){
+
+        global.connection.query('UPDATE users SET ? WHERE TG_ID = ?',[{NTF_2: 1}, id],function(err,data){
+          if(err) resolve(false)
+          else{
+            resolve(true);
+          }
+        });
       }).catch(function(err){
         global.connection.query('DELETE FROM users WHERE TG_ID = ?',id,function(err){
           if(err) throw err;
@@ -106,7 +119,8 @@ async function sendMsg(id){
             resolve(false);
           }
         })
-      })
+      });
+
     },2500);
 
   });
