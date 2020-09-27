@@ -29,7 +29,7 @@ bot.on('voice', async(msg) => {
 bot.on('message', async (msg) => {
   let haveUser = await getUser(msg.from.id);
 
-  console.log(msg);
+  // console.log(msg);
 
   if(msg.text == '/test'){
     
